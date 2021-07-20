@@ -24,21 +24,21 @@ namespace DealerLead.Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if(User.Identity.IsAuthenticated)
             {
                 ClaimsPrincipal principal = User as ClaimsPrincipal;
-                Guid Oid = (Guid)IdentityHelper.GetAzureOIDToken(principal);
+                Guid Oid = (Guid)IdentityHelper.GetAzureOIDToken(principal);               
                 var dealerUser = _context.DealerLeadUser.FirstOrDefault(u => u.OID == Oid);
                 if(dealerUser == null)
                 {
-                    ViewBag.IsRegistered = false;
+                    DealerLeadUser newUser = new DealerLeadUser { OID = Oid };
+                    _context.Add(newUser);
+                    await _context.SaveChangesAsync();
                 }
-                else
-                {
-                    ViewBag.IsRegistered = true;
-                }
+                
+                ViewBag.IsRegistered = true;
             }
             return View();
         }
