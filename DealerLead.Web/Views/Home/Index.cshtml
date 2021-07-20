@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (ViewBag.IsRegistered)
+        {
+        <ul>
+            <li>
+                <a asp-area="" asp-controller="SupportedStates" asp-action="Index">States</a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="SupportedMakes" asp-action="Index">Makes</a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="SupportedModels" asp-action="Index">Models</a>
+            </li>
+        </ul>
+        }
+        else
+        {
+            <h4>Seems like you don't have an account</h4>
+            <h4>Click below to register'</h4>
+            <form asp-action="Register">
+                <button type="submit">Register</button>
+            </form>
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+        }
+    }
+    else
+    {
+        <h3>You need to sign in.</h3>
+    }
+</div>
