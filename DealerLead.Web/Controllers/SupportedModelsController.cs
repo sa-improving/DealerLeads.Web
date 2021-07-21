@@ -90,8 +90,10 @@ namespace DealerLead.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,MakeName")] SupportedModel supportedModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,MakeId")] SupportedModel supportedModel)
         {
+            var check = supportedModel.Make;
+            var check2 = supportedModel.MakeId;
             if (id != supportedModel.Id)
             {
                 return NotFound();
@@ -101,6 +103,7 @@ namespace DealerLead.Web.Controllers
             {
                 try
                 {
+                    supportedModel.ModifyDate = DateTime.Now;
                     _context.Update(supportedModel);
                     await _context.SaveChangesAsync();
                 }

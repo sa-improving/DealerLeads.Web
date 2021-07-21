@@ -24,6 +24,18 @@ namespace DealerLead.Web.Controllers
             return _context.DealerLeadUser.FirstOrDefault(x => x.OID == OID).Id;
         }
 
+        //private int UserId(ClaimsPrincipal principal)
+        //{
+        //    var userId = HttpContext.Session.Get<int>("UserId");
+        //    if(userId == 0)
+        //    {
+        //        Guid OID = (Guid)IdentityHelper.GetAzureOIDToken(principal);
+        //        userId = _context.DealerLeadUser.FirstOrDefault(x => x.OID == OID).Id;
+        //    }
+        //    HttpContext.Session.Set("UserId", userId);
+        //    return userId;
+        //}
+
         //GET: Dealerships for logged in user
         public async Task<IActionResult> Index()
         {
@@ -50,7 +62,6 @@ namespace DealerLead.Web.Controllers
         public IActionResult Create()
         {
             ViewBag.State = new SelectList(_context.SupportedState, "Abbreiviation", "Name");
-            ViewData["State"] = new SelectList(_context.SupportedState, "Abbreiviation", "Name");
             return View();
         }
 
@@ -81,12 +92,13 @@ namespace DealerLead.Web.Controllers
             {
                 return NotFound();
             }
+            ViewBag.State = new SelectList(_context.SupportedState, "Abbreiviation", "Name", dealership.State);
             return View(dealership);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DealershipId,DealershipName,StreetAddress1,StreetAddress2,City,State,Zipcode,CreateingUserId")] Dealership dealership)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address1,Address2,City,State,Zipcode,UserId")] Dealership dealership)
         {
             if(id != dealership.Id)
             {
@@ -96,6 +108,8 @@ namespace DealerLead.Web.Controllers
             {
                 try
                 {
+                    ClaimsPrincipal principal = User as ClaimsPrincipal;
+                    dealership.UserId = UserId(principal);
                     dealership.ModifyDate = DateTime.Now;
                     _context.Update(dealership);
                     await _context.SaveChangesAsync();
@@ -113,6 +127,7 @@ namespace DealerLead.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.State = new SelectList(_context.SupportedState, "Abbreiviation", "Name", dealership.State);
             return View(dealership);
         }
 

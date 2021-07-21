@@ -54,7 +54,11 @@ namespace DealerLead.Web
             services.AddDbContext<DealerLeadDbContext>();
             //services.AddTransient<DealerLeadDbContext>();
 
-            
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(3);
+                options.Cookie.HttpOnly = true;
+            });
 
         }
         //private async Task OnTokenValidatedFunc(TokenValidatedContext context)
