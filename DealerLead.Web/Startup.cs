@@ -31,14 +31,21 @@ namespace DealerLead.Web
         {
             //services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             //    .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApp(options =>
+                {
+                    Configuration.Bind("AzureAD", options);
+                    options.Events ??= new OpenIdConnectEvents();
+                    options.Events.OnTokenValidated += Authentication.OnTokenValidatedFunc;
+                });
 
-            //services.AddControllersWithViews(options =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
-            //    options.Filters.Add(new AuthorizeFilter(policy));
-            //});
+            services.AddControllersWithViews(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             services.AddRazorPages()
                  .AddMicrosoftIdentityUI();
@@ -47,21 +54,15 @@ namespace DealerLead.Web
             services.AddDbContext<DealerLeadDbContext>();
             //services.AddTransient<DealerLeadDbContext>();
 
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(options =>
-                {
-                    Configuration.Bind("AzureAD", options);
-                    options.Events ??= new OpenIdConnectEvents();
-                    options.Events.OnTokenValidated += OnTokenValidatedFunc;
-                });
+            
 
         }
-        private async Task OnTokenValidatedFunc(TokenValidatedContext context)
-        {
-            // Custom code here
+        //private async Task OnTokenValidatedFunc(TokenValidatedContext context)
+        //{
+        //    // Custom code here
             
-            await Task.CompletedTask.ConfigureAwait(false);
-        }
+        //    await Task.CompletedTask.ConfigureAwait(false);
+        //}
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

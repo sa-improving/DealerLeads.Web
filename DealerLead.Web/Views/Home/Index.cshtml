@@ -9,17 +9,26 @@
 {
     if (ViewBag.IsRegistered)
     {
-        <ul>
-            <li>
-                <a asp-area="" asp-controller="SupportedStates" asp-action="Index">States</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="SupportedMakes" asp-action="Index">Makes</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="SupportedModels" asp-action="Index">Models</a>
-            </li>
-        </ul>
+<ul>
+    <li>
+        <a asp-area="" asp-controller="Dealerships" asp-action="Index">Manage Your Dealerships</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="SupportedStates" asp-action="Index">Manage Supported States</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="SupportedMakes" asp-action="Index">Manage Supported Makes</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="SupportedModels" asp-action="Index">Manage Supported Models</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="" asp-action="Index">Vehicles</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="" asp-action="Index">Leads</a>
+    </li>
+</ul>
     }
     else
     {
