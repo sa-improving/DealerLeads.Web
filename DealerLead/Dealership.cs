@@ -42,5 +42,7 @@ namespace DealerLead
         [Column("CreatingUserId")]
         public int UserId { get; set; }
 
+        public List<Vehicle> Vehicles { get; set; }
+
     }
 }

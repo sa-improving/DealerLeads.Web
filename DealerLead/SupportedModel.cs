@@ -30,5 +30,7 @@ namespace DealerLead
         [ScaffoldColumn(false)]
         public DateTime? ModifyDate { get; set; }
 
+        public List<Vehicle> Vehicles { get; set; }
+
     }
 }

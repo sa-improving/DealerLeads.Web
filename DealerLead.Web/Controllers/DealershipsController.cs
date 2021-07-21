@@ -18,23 +18,21 @@ namespace DealerLead.Web.Controllers
             _context = context;
         }
 
-        private int UserId(ClaimsPrincipal principal)
-        {
-            Guid OID = (Guid)IdentityHelper.GetAzureOIDToken(principal);
-            return _context.DealerLeadUser.FirstOrDefault(x => x.OID == OID).Id;
-        }
-
         //private int UserId(ClaimsPrincipal principal)
         //{
-        //    var userId = HttpContext.Session.Get<int>("UserId");
-        //    if(userId == 0)
-        //    {
-        //        Guid OID = (Guid)IdentityHelper.GetAzureOIDToken(principal);
-        //        userId = _context.DealerLeadUser.FirstOrDefault(x => x.OID == OID).Id;
-        //    }
-        //    HttpContext.Session.Set("UserId", userId);
-        //    return userId;
+        //    return IdentityHelper.UserId(principal, _context);
         //}
+
+        private int UserId(ClaimsPrincipal principal)
+        {
+            var userId = HttpContext.Session.Get<int>("UserId");
+            if (userId == 0)
+            {
+                userId = IdentityHelper.UserId(principal, _context);
+            }
+            HttpContext.Session.Set("UserId", userId);
+            return userId;
+        }
 
         //GET: Dealerships for logged in user
         public async Task<IActionResult> Index()

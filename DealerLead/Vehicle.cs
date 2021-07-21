@@ -14,8 +14,9 @@ namespace DealerLead
         [Column("VehicleId")]
         public int Id { get; set; }
 
-        [Column("ModelId")]
-        public int Model { get; set; }
+        
+        public int ModelId { get; set; }
+        public SupportedModel Model { get; set; }
 
         [Column("MSRP")]
         public decimal MSRP { get; set; }
@@ -26,11 +27,14 @@ namespace DealerLead
         [Column("Color")]
         public string Color { get; set; }
 
-        [Column("DealershiplId")]
-        public int Dealership { get; set; }
+        
+        public int DealershipId { get; set; }
+        public Dealership Dealership { get; set; }
 
-        [ScaffoldColumn(false)]
-        public DateTime? SaleDate { get; set; }
+        
+
+        [Column("SellDate")]
+        public DateTime? SellDate { get; set; }
 
         [ScaffoldColumn(false)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

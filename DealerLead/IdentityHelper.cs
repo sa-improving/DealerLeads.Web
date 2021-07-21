@@ -31,5 +31,11 @@ namespace DealerLead
             }
             return Guid.Parse(oidClaim.Value);
         }
+
+        public static int UserId(ClaimsPrincipal principal, DealerLeadDbContext context)
+        {
+            Guid OID = (Guid)IdentityHelper.GetAzureOIDToken(principal);
+            return context.DealerLeadUser.FirstOrDefault(x => x.OID == OID).Id;
+        }
     }
 }
